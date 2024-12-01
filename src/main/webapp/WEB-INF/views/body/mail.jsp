@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Board Page</title>
+    <title>Mail Page</title>
 </head>
 <body>
-    <h1>Board Page</h1>
+    <h1>Mail Page</h1>
     <p>Welcome to your JSP page.</p>
 </body>
 </html>
