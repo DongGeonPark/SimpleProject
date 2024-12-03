@@ -139,3 +139,13 @@ body {
 .footer ul li a:hover {
     color: #1ec800;
 }
+
+.main-content-full {
+    max-width: 1280px;
+    margin: 84px auto 0;
+    padding: 30px;
+    min-height: calc(100vh - 64px - 100px);
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}

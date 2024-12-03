@@ -4,16 +4,28 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-    <definition name="base.definition" template="/WEB-INF/views/tiles/layout.jsp">
-        <put-attribute name="title" value="Naver Style Page"/>
-        <put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp"/>
-        <put-attribute name="sidebar" value="/WEB-INF/views/tiles/sidebar.jsp"/>
+    <definition name="base.definition" template="/WEB-INF/views/common/tiles/layout.jsp">
+        <put-attribute name="title" value="Simple Project"/>
+        <put-attribute name="header" value="/WEB-INF/views/common/tiles/header.jsp"/>
+        <put-attribute name="sidebar" value="/WEB-INF/views/common/tiles/sidebar.jsp"/>
         <put-attribute name="body" value="/WEB-INF/views/body/index.jsp"/>
-        <put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/tiles/footer.jsp"/>
+    </definition>
+    
+    <!-- 메뉴 타이틀 별 페이지 -->
+    <definition name="*/*/main" template="/WEB-INF/views/common/tiles/layout.jsp">
+        <put-attribute name="title" value="{2}"/>
+        <put-attribute name="header" value="/WEB-INF/views/{1}/tiles/header.jsp"/>
+        <put-attribute name="sidebar" value="/WEB-INF/views/{1}/tiles/sidebar.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/views/{1}/body/{2}.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/views/{1}/tiles/footer.jsp"/>
     </definition>
 
-    <definition name="*" extends="base.definition">
-        <put-attribute name="body" value="/WEB-INF/views/body/{1}.jsp"/>
+    <definition name="home" template="/WEB-INF/views/common/tiles/home-layout.jsp">
+        <put-attribute name="title" value="Simple Project"/>
+        <put-attribute name="header" value="/WEB-INF/views/common/tiles/header.jsp"/>
+        <put-attribute name="body" value="/WEB-INF/views/common/body/index.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/tiles/footer.jsp"/>
     </definition>
 
 </tiles-definitions>

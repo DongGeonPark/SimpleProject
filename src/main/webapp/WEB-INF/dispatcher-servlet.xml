@@ -3,20 +3,45 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context.xsd
            http://www.springframework.org/schema/mvc
-           http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://mybatis.org/schema/mybatis-spring 
+           http://mybatis.org/schema/mybatis-spring.xsd
+           http://www.springframework.org/schema/cache
+           http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-    <!-- Enable annotation-driven controllers, validation, etc. -->
     <mvc:annotation-driven/>
-
-    <!-- Scan for annotated components in the specified package -->
     <context:component-scan base-package="com.example"/>
+    <mybatis:scan base-package="com.example.mapper"/>
 
-    <!-- Tiles configuration -->
+    <!-- 인터셉터 설정 -->
+    <mvc:interceptors>
+        <bean class="com.example.interceptor.MenuInterceptor"/>
+    </mvc:interceptors>
+
+    <!-- DataSource 설정 -->
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/SimpleProject"/>
+    </bean>
+
+    <!-- SqlSessionFactory 설정 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
+    </bean>
+
+    <!-- SqlSessionTemplate 설정 -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- 기존 Tiles 설정 유지 -->
     <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
         <property name="definitions">
             <list>
@@ -25,9 +50,23 @@
         </property>
     </bean>
 
-    <!-- Tiles view resolver configuration -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
     </bean>
 
+    <cache:annotation-driven />
+
+    <!-- 캐시 관리자 설정 -->
+    <bean id="cacheManager" class="org.springframework.cache.concurrent.ConcurrentMapCacheManager">
+        <property name="cacheNames">
+            <list>
+                <value>menuCache</value>
+                <value>boardCache</value>
+            </list>
+        </property>
+    </bean>
+
+    <mvc:resources mapping="/resources/**" location="/resources/">
+        <mvc:cache-control max-age="31556926"/>
+    </mvc:resources>
 </beans> 
